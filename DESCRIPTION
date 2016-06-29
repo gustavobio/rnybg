@@ -8,9 +8,9 @@ Description: This package provides functions to get the url of a given specimen
     from GBIF and follow it to get the specimen's description (which is not provided
     by default) and images, if there are any. It was indented to be used with rgbif.
 Depends:
-    R (>= 3.2.4)
+    R (>= 3.2.4),
+    rvest
 Imports:
-    rvest,
     rgbif
 License: GPL-3
 LazyData: TRUE
