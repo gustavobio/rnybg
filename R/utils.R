@@ -5,7 +5,7 @@
 #' @param path Where to save downloaded images. Defaults to getwd().
 #' @param ... Other parameters passed on to rgbif::occ_search.
 #'
-#' @import rvest
+#' @import rvest magrittr
 #' @examples
 #' \dontrun{
 #' get_description(1889108)
