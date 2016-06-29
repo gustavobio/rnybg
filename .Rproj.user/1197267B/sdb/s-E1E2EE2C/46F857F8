@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "#' Utility tools to get specimen description and images from NYBG's virtual herbarium\n#'\n#' @param ny_id The NYBG specimen ID. It is equivalent to the field catalogNumber\n#' in GBIF.\n#' @param path Where to save downloaded images. Defaults to getwd().\n#' @param ... Other parameters passed on to rgbif::occ_search.\n#'\n#' @import rvest\n#' @examples\n#' \\dontrun{\n#' get_description(1889108)\n#' specimen_page(1889108)\n#' fill_description(1889108)\n#' get_image_url(1889108)\n#' open_image(1889108)\n#' download_image(1889108)\n#' }\n\n#' @export\nget_description <- function(ny_id) {\n  description <- read_html(specimen_page(ny_id)) %>%\n    html_nodes(\"tr:nth-child(5) .emuDisplayTableValue\") %>%\n    html_text()\n  description <- trimws(description)\n  return(description)\n}\n\n#' @export\nget_gbif_response <- function(ny_id, datasetKey = \"d415c253-4d61-4459-9d25-4015b9084fb0\", ...) {\n  rgbif::occ_search(catalogNumber = ny_id, datasetKey = datasetKey, ...)\n}\n\n#' @export\nspecimen_page <- function(ny_id) {\n  gbif_response <- get_gbif_response(ny_id = ny_id, return = 'data')\n  gbif_response[, grep(\"occurrenceDetails\", names(gbif_response))]\n}\n\n#' @export\nfill_description <- function(ny_id, ...) {\n  if (!is.numeric(ny_id)) stop(\"The ID must be numeric.\")\n  dot_args <- eval(substitute(alist(...)))\n  return_all <- !('return' %in% names(dot_args)) | isTRUE(dot_args$return == 'all')\n  gbif_response <- get_gbif_respose(ny_id = ny_id, ...)\n  description <- get_description(ny_id)\n  if (return_all) {\n    names(gbif_response$data)[grep(\"occurrenceDetails\", names(gbif_response$data))] <- \"occurrenceDetails\"\n    gbif_response$data$occurrenceDetails <- description\n  } else {\n    names(gbif_response)[grep(\"occurrenceDetails\", names(gbif_response))] <- \"occurrenceDetails\"\n    gbif_response$occurrenceDetails <- description\n  }\n  return(gbif_response)\n}\n\n#' @export\nget_image_url <- function(ny_id) {\n  image_url <- read_html(specimen_page(ny_id)) %>%\n    html_nodes(\"#columns tr+ tr a\") %>%\n    html_attr(\"href\")\n  return(paste0(\"http://sweetgum.nybg.org\", image_url))\n}\n\n#' @export\nopen_image <- function(ny_id) {\n  browseURL(get_image_url(ny_id))\n}\n\n#' @export\ndownload_image <- function(ny_id, path = getwd()) {\n  image_url <- get_image_url(ny_id)\n  filename <- basename(image_url)\n  message(\"Downloading image to\", path)\n  download.file(image_url, destfile = filename)\n}\n",
+    "created" : 1467230222301.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3834567124",
+    "id" : "46F857F8",
+    "lastKnownWriteTime" : 1467230394,
+    "last_content_update" : 1467230394915,
+    "path" : "~/Documents/nybg/R/utils.R",
+    "project_path" : "R/utils.R",
+    "properties" : {
+        "chunk_rendered_width" : "650"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

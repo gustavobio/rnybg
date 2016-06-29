@@ -1,0 +1,17 @@
+Package: rnybg
+Type: Package
+Title: Get Specimen Description and Images from NYBG's Virtual Herbarium
+Version: 0.1.0
+Authors@R: person("Gustavo", "Carvalho", email = "gustavo.bio@gmail.com",
+                  role = c("aut", "cre"))
+Description: This package provides functions to get the url of a given specimen
+    from GBIF and follow it to get the specimen's description (which is not provided
+    by default) and images, if there are any. It was indented to be used with rgbif.
+Depends:
+    R (>= 3.2.4)
+Imports:
+    rvest,
+    rgbif
+License: GPL-3
+LazyData: TRUE
+RoxygenNote: 5.0.1
