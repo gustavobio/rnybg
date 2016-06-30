@@ -20,7 +20,7 @@ Utility tools to get specimen description and images from NYBG's virtual herbari
 \examples{
 \dontrun{
 get_description(1889108)
-specimen_page(1889108)
+get_specimen_url(1889108)
 fill_description(1889108)
 get_image_url(1889108)
 open_image(1889108)
